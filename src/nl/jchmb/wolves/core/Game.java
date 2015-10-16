@@ -2,17 +2,53 @@ package nl.jchmb.wolves.core;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import nl.jchmb.wolves.ai.World;
 
 public class Game {
+	private Set<World> possibleWorlds = null;
 	private List<Player> players;
 	private List<Day> days;
 	private int numWolves;
+	private static final int DEFAULT_LIMIT = 20000;
 	
-	public Game(List<Player> players, int numWolves) {
-		this.players = players;
+	public Game(List<Agent> agents, int numWolves) {
+		players = new ArrayList<Player>();
+		for (Agent agent : agents) {
+			players.add(new Player(agent));
+		}
 		days = new ArrayList<Day>();
 		this.numWolves = numWolves;
+	}
+	
+	public Set<World> getAllPossibleWorlds() {
+		if (possibleWorlds != null) {
+			return possibleWorlds;
+		}
+		int n = (int) Math.pow(2, players.size());
+		Set<World> worlds = new HashSet<World>();
+		Set<Player> wolves;
+		World world;
+		for (int i = 0; i < n; i++) {
+			wolves = new HashSet<Player>();
+			for (int j = 0; j < players.size(); j++) {
+				if (((i >> j) & 0x1) == 1) {
+					wolves.add(players.get(j));
+				}
+				if (wolves.size() > players.size()) {
+					break;
+				}
+			}
+			if (wolves.size() == numWolves) {
+				world = new World(wolves);
+				worlds.add(world);
+			}
+		}
+		possibleWorlds = worlds;
+		return worlds;
 	}
 	
 	public List<Player> getPlayers() {
@@ -39,6 +75,13 @@ public class Game {
 	
 	public boolean terminates() {
 		return getVictor() != null;
+	}
+	
+	public Day getDay(int number) {
+		if (number < 0 || number >= days.size()) {
+			return null;
+		}
+		return days.get(number);
 	}
 	
 	public Day getCurrentDay() {
@@ -85,10 +128,10 @@ public class Game {
 		}
 	}
 	
-	public Role play(int limit) {
+	public Role play() {
 		giveRoles();
 		while (!terminates() && 
-				(getCurrentDay() == null || getCurrentDay().getNumber() < limit)) {
+				(getCurrentDay() == null || getCurrentDay().getNumber() < DEFAULT_LIMIT)) {
 			playRound();
 		}
 		return getVictor();
@@ -98,7 +141,7 @@ public class Game {
 		nextDay();
 		Player votee;
 		for (Player voter : getAlivePlayers()) {
-			votee = voter.getAgent().choose(getCurrentDay());
+			votee = voter.getAgent().choose(voter, getCurrentDay());
 			getCurrentDay().vote(voter, votee);
 		}
 		getCurrentDay().lynch();

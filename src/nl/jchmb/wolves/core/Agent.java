@@ -18,7 +18,7 @@ public class Agent {
 		this.policy = policy;
 	}
 	
-	public Player choose(Day day) {
-		return policy.choose(day);
+	public Player choose(Player player, Day day) {
+		return policy.choose(player, day);
 	}
 }

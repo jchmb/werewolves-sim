@@ -10,7 +10,7 @@ import nl.jchmb.wolves.core.Player;
 public class RandomPolicy implements Policy {
 
 	@Override
-	public Player choose(Day day) {
+	public Player choose(Player actor, Day day) {
 		List<Player> players = new ArrayList<Player>(day.getAlivePlayers());
 		Collections.shuffle(players);
 		return players.isEmpty() ? null : players.get(0);

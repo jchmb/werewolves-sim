@@ -4,5 +4,5 @@ import nl.jchmb.wolves.core.Day;
 import nl.jchmb.wolves.core.Player;
 
 public interface Policy {
-	public Player choose(Day day);
+	public Player choose(Player actor, Day day);
 }
