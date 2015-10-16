@@ -11,7 +11,7 @@ import nl.jchmb.wolves.core.policy.RandomPolicy;
 import nl.jchmb.wolves.core.policy.RoleDependentPolicy;
 import nl.jchmb.wolves.core.policy.VoteInnocentPolicy;
 
-public class RandomGameTest {
+public class AnalyticGameTest {
 	public static void main(String[] args) {
 		List<Agent> agents = new ArrayList<Agent>();
 		Agent agent;
@@ -20,13 +20,13 @@ public class RandomGameTest {
 			agent.setPolicy(
 				new RoleDependentPolicy(
 					new VoteInnocentPolicy(),
-					new RandomPolicy()
+					new AnalyticInnocentPolicy()
 				)
 			);
 			agents.add(agent);
 		}
 		Evaluator evaluator = new Evaluator(agents, 2);
-		double evaluation = evaluator.evaluate(9000);
+		double evaluation = evaluator.evaluate(1);
 		System.out.println(evaluation);
 	}
 }

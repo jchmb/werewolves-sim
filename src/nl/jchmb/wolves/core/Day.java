@@ -26,7 +26,7 @@ public class Day {
 	}
 	
 	public Day getPreviousDay() {
-		return game.getDay(getNumber() - 1);
+		return game.getDay(getNumber() - 2);
 	}
 	
 	public int countVotes(Player player) {

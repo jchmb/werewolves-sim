@@ -16,8 +16,20 @@ public class BeliefBasedPolicy implements Policy {
 		this.f = f;
 	}
 	
+	public BeliefBasedPolicy() {
+		this(null);
+	}
+	
 	protected void combine(MassFunction<World> g) {
-		f = f.combine(g);
+		if (f == null && g != null) {
+			f = g;
+		} else if (f != null && g != null) {
+			f = f.combine(g);
+		}
+	}
+	
+	public boolean hasMassFunction() {
+		return f != null;
 	}
 	
 	@Override

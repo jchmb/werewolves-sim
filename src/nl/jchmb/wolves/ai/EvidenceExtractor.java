@@ -13,10 +13,10 @@ public class EvidenceExtractor {
 	/**
 	 * Alpha parameter. Determines the speed of belief update. Analogous to the learning rate in machine learning.
 	 */
-	private double alpha = 0.55d;
+	private double alpha = 0.6d;
 	
 	private void extractVote(Day day, Vote vote, MassFunction<World> f) {
-		Set<World> possibleWorlds = null; // TODO
+		Set<World> possibleWorlds = day.getGame().getAllPossibleWorlds();
 		Player player = day.getLynched();
 		Player voter = vote.getVoter();
 		Role role = player.getRole();
@@ -44,6 +44,9 @@ public class EvidenceExtractor {
 	}
 	
 	public MassFunction<World> extract(Day day) {
+		if (day.getLynched() == null) {
+			return null;
+		}
 		MassFunction<World> f = new MassFunction<World>();
 		for (Vote vote : day.getVotes()) {
 			extractVote(day, vote, f);
