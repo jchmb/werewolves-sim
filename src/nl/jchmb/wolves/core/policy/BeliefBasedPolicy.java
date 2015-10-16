@@ -2,6 +2,7 @@ package nl.jchmb.wolves.core.policy;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import nl.jchmb.wolves.ai.BeliefComparator;
 import nl.jchmb.wolves.ai.MassFunction;
@@ -20,10 +21,19 @@ public class BeliefBasedPolicy implements Policy {
 		this(null);
 	}
 	
+	protected void pruneMassFunction(Set<World> impossibleWorlds) {
+		if (f != null) {
+			f.prune(impossibleWorlds);
+			f.merge();
+			f.normalize();
+		}
+	}
+	
 	protected void combine(MassFunction<World> g) {
 		if (f == null && g != null) {
 			f = g;
 		} else if (f != null && g != null) {
+			
 			f = f.combine(g);
 		}
 	}

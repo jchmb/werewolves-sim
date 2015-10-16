@@ -15,7 +15,7 @@ public class AnalyticGameTest {
 	public static void main(String[] args) {
 		List<Agent> agents = new ArrayList<Agent>();
 		Agent agent;
-		for (int i = 0; i < 9; i++) {
+		for (int i = 0; i < 15; i++) {
 			agent = new Agent("a_" + i);
 			agent.setPolicy(
 				new RoleDependentPolicy(
@@ -25,8 +25,8 @@ public class AnalyticGameTest {
 			);
 			agents.add(agent);
 		}
-		Evaluator evaluator = new Evaluator(agents, 2);
-		double evaluation = evaluator.evaluate(1);
-		System.out.println(evaluation);
+		Evaluator evaluator = new Evaluator(agents, 4);
+		double evaluation = evaluator.evaluate(100);
+		System.out.println("Analytic evaluation: " + evaluation);
 	}
 }

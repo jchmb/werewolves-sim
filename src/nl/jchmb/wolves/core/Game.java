@@ -7,21 +7,33 @@ import java.util.List;
 import java.util.Set;
 
 import nl.jchmb.wolves.ai.World;
+import nl.jchmb.wolves.ai.WorldFilter;
 
 public class Game {
 	private Set<World> possibleWorlds = null;
+	private Set<World> impossibleWorlds;
 	private List<Player> players;
 	private List<Day> days;
 	private int numWolves;
 	private static final int DEFAULT_LIMIT = 20000;
 	
 	public Game(List<Agent> agents, int numWolves) {
+		impossibleWorlds = new HashSet<World>();
 		players = new ArrayList<Player>();
 		for (Agent agent : agents) {
 			players.add(new Player(agent));
 		}
 		days = new ArrayList<Day>();
 		this.numWolves = numWolves;
+	}
+	
+	/**
+	 * Get all impossible worlds that are excluded by common knowledge.
+	 * 
+	 * @return
+	 */
+	public Set<World> getAllImpossibleWorlds() {
+		return impossibleWorlds;
 	}
 	
 	public Set<World> getAllPossibleWorlds() {
@@ -89,12 +101,21 @@ public class Game {
 	}
 	
 	public Day nextDay() {
+		/* Prune all impossible worlds, since the impossibility has become common knowledge after the previous lynch. */
+		if (getCurrentDay() != null && getCurrentDay().getLynched() != null) {
+			Player lynched = getCurrentDay().getLynched();
+			Set<World> worlds = getAllPossibleWorlds();
+			WorldFilter filter = new WorldFilter();
+			possibleWorlds = filter.assumePlayerHasRole(worlds, lynched, lynched.getRole());
+			impossibleWorlds.addAll(filter.assumePlayerHasRole(worlds, lynched, lynched.getRole().equals(Role.WOLF) ? Role.INNOCENT : Role.WOLF));
+		}
+		
 		Day day = new Day(this, days.size() + 1);
 		days.add(day);
 		return day;
 	}
 	
-	public Role getVictor() {
+	public Reward getVictor() {
 		int innocentCount = 0, wolfCount = 0;
 		for (Player player : players) {
 			if (player.isDead()) {
@@ -107,9 +128,11 @@ public class Game {
 			}
 		}
 		if (innocentCount == 0) {
-			return Role.WOLF;
+			return Reward.WOLF;
 		} else if (wolfCount == 0) {
-			return Role.INNOCENT;
+			return Reward.INNOCENT;
+		} else if (innocentCount == 1 && wolfCount == 1) {
+			return Reward.NONE;
 		} else {
 			return null;
 		}
@@ -128,7 +151,7 @@ public class Game {
 		}
 	}
 	
-	public Role play() {
+	public Reward play() {
 		giveRoles();
 		while (!terminates() && 
 				(getCurrentDay() == null || getCurrentDay().getNumber() < DEFAULT_LIMIT)) {

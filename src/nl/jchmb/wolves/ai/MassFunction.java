@@ -1,8 +1,10 @@
 package nl.jchmb.wolves.ai;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class MassFunction<W> {
@@ -38,6 +40,72 @@ public class MassFunction<W> {
 	public void add(W world, double mass) {
 		Set<W> worlds = getSingleton(world);
 		add(worlds, mass);
+	}
+	
+	public void prune(Set<W> impossibleWorlds) {
+		Mass m;
+		Set<W> intersection;
+		for (int i = 0; i < distribution.size(); i++) {
+			m = distribution.get(i);
+			intersection = m.intersect(impossibleWorlds);
+			if (!intersection.isEmpty()) {
+				distribution.set(i, new Mass(intersection, intersection.isEmpty() ? 0.0d : m.mass));
+			} else {
+				distribution.remove(m);
+				i--;
+			}
+		}
+	}
+	
+	public void merge() {
+		List<Mass> newDistribution = new ArrayList<Mass>();
+		Map<Set<W>, List<Mass>> map = new HashMap<Set<W>, List<Mass>>();
+		List<Mass> sameMasses;
+		boolean needsMerging = false;
+		for (Mass m : distribution) {
+			Set<W> worlds = m.worlds;
+			if (!map.containsKey(worlds)) {
+				sameMasses = new ArrayList<Mass>();
+				sameMasses.add(m);
+				map.put(worlds, sameMasses);
+			} else {
+				needsMerging = true;
+				map.get(worlds).add(m);
+			}
+		}
+		
+		if (needsMerging) {
+			for (Map.Entry<Set<W>, List<Mass>> entry : map.entrySet()) {
+				if (entry.getValue().size() == 1) {
+					newDistribution.add(entry.getValue().get(0));
+				} else {
+					double newMass = 0.0d;
+					for (Mass m : entry.getValue()) {
+						newMass += m.mass;
+					}
+					newDistribution.add(new Mass(entry.getKey(), newMass));
+				}
+			}
+			distribution = newDistribution;
+		}
+	}
+	
+	public double getTotalMass() {
+		double totalMass = 0.0d;
+		for (Mass m : distribution) {
+			totalMass += m.mass;
+		}
+		return totalMass;
+	}
+	
+	public void normalize() {
+		double totalMass = getTotalMass();
+		double multiplier = 1.0d / totalMass;
+		if (totalMass != 1.0d) {
+			for (Mass m : distribution) {
+				m.mass *= multiplier;
+			}
+		}
 	}
 	
 	public MassFunction<W> combine(MassFunction<W> f) {

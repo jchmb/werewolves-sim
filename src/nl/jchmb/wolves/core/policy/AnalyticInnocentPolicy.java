@@ -17,6 +17,7 @@ public class AnalyticInnocentPolicy extends BeliefBasedPolicy {
 	public Player choose(Player actor, Day day) {
 		/* On the second day, start analyzing evidence and updating one's beliefs. */
 		if (day.getNumber() > 1) {
+			pruneMassFunction(day.getGame().getAllImpossibleWorlds());
 			combine(evidenceExtractor.extract(day.getPreviousDay()));
 		}
 		

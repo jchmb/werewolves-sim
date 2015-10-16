@@ -11,7 +11,7 @@ import nl.jchmb.wolves.core.Vote;
 
 public class EvidenceExtractor {
 	/**
-	 * Alpha parameter. Determines the speed of belief update. Analogous to the learning rate in machine learning.
+	 * Alpha parameter. Determines the speed of belief update. Analogous to the learning rate in machine learning, but defined differently.
 	 */
 	private double alpha = 0.6d;
 	
