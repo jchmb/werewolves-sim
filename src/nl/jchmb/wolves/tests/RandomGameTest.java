@@ -15,7 +15,7 @@ public class RandomGameTest {
 	public static void main(String[] args) {
 		List<Agent> agents = new ArrayList<Agent>();
 		Agent agent;
-		for (int i = 0; i < 16; i++) {
+		for (int i = 0; i < 7; i++) {
 			agent = new Agent("a_" + i);
 			agent.setPolicy(
 				new RoleDependentPolicy(
@@ -25,8 +25,8 @@ public class RandomGameTest {
 			);
 			agents.add(agent);
 		}
-		Evaluator evaluator = new Evaluator(agents, 4);
-		double evaluation = evaluator.evaluate(1000);
+		Evaluator evaluator = new Evaluator(agents, 2);
+		double evaluation = evaluator.evaluate(50000);
 		System.out.println("Random evaluation: " + evaluation);
 	}
 }

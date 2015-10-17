@@ -16,7 +16,7 @@ public class MixedAnalyticGameTest {
 	public static void main(String[] args) {
 		List<Agent> agents = new ArrayList<Agent>();
 		Agent agent;
-		for (int i = 0; i < 15; i++) {
+		for (int i = 0; i < 7; i++) {
 			agent = new Agent("a_" + i);
 			agent.setPolicy(
 				new RoleDependentPolicy(
@@ -29,8 +29,8 @@ public class MixedAnalyticGameTest {
 			);
 			agents.add(agent);
 		}
-		Evaluator evaluator = new Evaluator(agents, 4);
-		double evaluation = evaluator.evaluate(100);
+		Evaluator evaluator = new Evaluator(agents, 2);
+		double evaluation = evaluator.evaluate(50000);
 		System.out.println("Mixed evaluation: " + evaluation);
 	}
 }
