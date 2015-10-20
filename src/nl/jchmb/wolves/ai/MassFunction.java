@@ -42,12 +42,12 @@ public class MassFunction<W> {
 		add(worlds, mass);
 	}
 	
-	public void prune(Set<W> impossibleWorlds) {
+	public void prune(Set<W> updatedPossibleWorlds) {
 		Mass m;
 		Set<W> intersection;
 		for (int i = 0; i < distribution.size(); i++) {
 			m = distribution.get(i);
-			intersection = m.intersect(impossibleWorlds);
+			intersection = m.intersect(updatedPossibleWorlds);
 			if (!intersection.isEmpty()) {
 				distribution.set(i, new Mass(intersection, intersection.isEmpty() ? 0.0d : m.mass));
 			} else {

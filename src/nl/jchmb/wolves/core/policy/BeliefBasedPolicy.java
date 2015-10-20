@@ -11,22 +11,24 @@ import nl.jchmb.wolves.core.Day;
 import nl.jchmb.wolves.core.Player;
 
 public class BeliefBasedPolicy implements Policy {
-	private MassFunction<World> f;
-	
-	public BeliefBasedPolicy(MassFunction<World> f) {
-		this.f = f;
-	}
-	
+	private static MassFunction<World> f = null;
+	protected static long lastGameID = -1;
+	protected static int lastDay = -1;
+
 	public BeliefBasedPolicy() {
-		this(null);
+		
 	}
 	
-	protected void pruneMassFunction(Set<World> impossibleWorlds) {
+	protected void pruneMassFunction(Set<World> possibleWorlds) {
 		if (f != null) {
-			f.prune(impossibleWorlds);
+			f.prune(possibleWorlds);
 			f.merge();
 			f.normalize();
 		}
+	}
+	
+	protected void reset() {
+		f = null;
 	}
 	
 	protected void combine(MassFunction<World> g) {

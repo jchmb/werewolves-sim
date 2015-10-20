@@ -1,5 +1,6 @@
 package nl.jchmb.wolves.tests;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,12 +20,11 @@ public class Evaluator {
 	}
 	
 	/**
-	 * Returns the win ratio of wolves.
+	 * Prints the win ratio of wolves.
 	 * 
 	 * @param n sampleSize
-	 * @return
 	 */
-	public double evaluate(int n) {
+	public void evaluate(int n) {
 		double wolfCount = 0.0d;
 		double innocentCount = 0.0d;
 		double neutralCount = 0.0d;
@@ -46,9 +46,29 @@ public class Evaluator {
 				neutralCount += 1.0d;
 			}
 		}
-		if (doubleN == neutralCount) {
-			return 0.5d;
+		
+		wolfCount += neutralCount / 2;
+		innocentCount += neutralCount / 2;
+		
+		wolfCount /= doubleN;
+		innocentCount /= doubleN;
+		
+		DecimalFormat df = new DecimalFormat();
+		df.setMaximumFractionDigits(2);
+		
+		System.out.println(df.format(wolfCount) + " & " + df.format(innocentCount) + " \\\\");
+		//System.out.println("Statistics [W=" + (wolfCount / doubleN) + ", I=" + (innocentCount / doubleN) + ", D=" + (neutralCount / doubleN));
+	}
+	
+	public class Evaluation {
+		private double wolfCount;
+		private double innocentCount;
+		private double neutralCount;
+		
+		public Evaluation(double wolfCount, double innocentCount, double neutralCount) {
+			this.wolfCount = wolfCount;
+			this.innocentCount = innocentCount;
+			this.neutralCount = neutralCount;
 		}
-		return wolfCount / ((doubleN - neutralCount));
 	}
 }

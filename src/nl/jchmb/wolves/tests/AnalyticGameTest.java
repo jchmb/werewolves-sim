@@ -26,7 +26,6 @@ public class AnalyticGameTest {
 			agents.add(agent);
 		}
 		Evaluator evaluator = new Evaluator(agents, 2);
-		double evaluation = evaluator.evaluate(50000);
-		System.out.println("Analytic evaluation: " + evaluation);
+		evaluator.evaluate(10000);
 	}
 }

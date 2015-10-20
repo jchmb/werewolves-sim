@@ -9,15 +9,19 @@ import java.util.Set;
 import nl.jchmb.wolves.ai.World;
 import nl.jchmb.wolves.ai.WorldFilter;
 
-public class Game {
+public class Game {	
+	private long id;
 	private Set<World> possibleWorlds = null;
 	private Set<World> impossibleWorlds;
 	private List<Player> players;
 	private List<Day> days;
 	private int numWolves;
+	
+	private static long LAST_ID = 0;
 	private static final int DEFAULT_LIMIT = 20000;
 	
 	public Game(List<Agent> agents, int numWolves) {
+		id = LAST_ID++;
 		impossibleWorlds = new HashSet<World>();
 		players = new ArrayList<Player>();
 		for (Agent agent : agents) {
@@ -25,6 +29,10 @@ public class Game {
 		}
 		days = new ArrayList<Day>();
 		this.numWolves = numWolves;
+	}
+	
+	public long getID() {
+		return id;
 	}
 	
 	/**
@@ -131,6 +139,8 @@ public class Game {
 			return Reward.WOLF;
 		} else if (wolfCount == 0) {
 			return Reward.INNOCENT;
+		} else if (wolfCount > innocentCount) {
+			return Reward.WOLF;
 		} else if (innocentCount == 1 && wolfCount == 1) {
 			return Reward.NONE;
 		} else {

@@ -15,10 +15,18 @@ public class AnalyticInnocentPolicy extends BeliefBasedPolicy {
 
 	@Override
 	public Player choose(Player actor, Day day) {
+		if (day.getGame().getID() != lastGameID) {
+			lastGameID = day.getGame().getID();
+			lastDay = 1;
+			reset();
+		}
 		/* On the second day, start analyzing evidence and updating one's beliefs. */
 		if (day.getNumber() > 1) {
-			pruneMassFunction(day.getGame().getAllPossibleWorlds());
-			combine(evidenceExtractor.extract(day.getPreviousDay()));
+			if (lastDay < day.getNumber()) {
+				lastDay = day.getNumber();
+				pruneMassFunction(day.getGame().getAllPossibleWorlds());
+				combine(evidenceExtractor.extract(day.getPreviousDay()));
+			}
 		}
 		
 		if (hasMassFunction()) {

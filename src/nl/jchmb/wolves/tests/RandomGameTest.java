@@ -19,14 +19,14 @@ public class RandomGameTest {
 			agent = new Agent("a_" + i);
 			agent.setPolicy(
 				new RoleDependentPolicy(
-					new VoteInnocentPolicy(),
+					new RandomPolicy(),
+					//new VoteInnocentPolicy(),
 					new RandomPolicy()
 				)
 			);
 			agents.add(agent);
 		}
 		Evaluator evaluator = new Evaluator(agents, 2);
-		double evaluation = evaluator.evaluate(50000);
-		System.out.println("Random evaluation: " + evaluation);
+		evaluator.evaluate(50000);
 	}
 }

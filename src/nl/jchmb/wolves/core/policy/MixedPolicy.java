@@ -13,9 +13,13 @@ public class MixedPolicy implements Policy {
 	private Random random;
 	
 	public MixedPolicy(double randomProbability, Policy purePolicy) {
+		this(randomProbability, purePolicy, new RandomPolicy());
+	}
+	
+	public MixedPolicy(double randomProbability, Policy purePolicy, Policy otherPolicy) {
 		this.randomProbability = randomProbability;
 		this.purePolicy = purePolicy;
-		randomPolicy = new RandomPolicy();
+		randomPolicy = otherPolicy;
 		random = new Random();
 	}
 	
