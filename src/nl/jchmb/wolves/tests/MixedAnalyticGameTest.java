@@ -8,6 +8,7 @@ import nl.jchmb.wolves.core.Game;
 import nl.jchmb.wolves.core.Player;
 import nl.jchmb.wolves.core.policy.AnalyticInnocentPolicy;
 import nl.jchmb.wolves.core.policy.MixedPolicy;
+import nl.jchmb.wolves.core.policy.MurderFirstInnocentPolicy;
 import nl.jchmb.wolves.core.policy.RandomPolicy;
 import nl.jchmb.wolves.core.policy.RoleDependentPolicy;
 import nl.jchmb.wolves.core.policy.VoteInnocentPolicy;
@@ -18,7 +19,7 @@ public class MixedAnalyticGameTest {
 		Agent agent;
 		for (int i = 0; i < 7; i++) {
 			agent = new Agent("a_" + i);
-			agent.setPolicy(
+			agent.setVotePolicy(
 				new RoleDependentPolicy(
 					new MixedPolicy(
 						Float.parseFloat(args[0]),
@@ -28,9 +29,12 @@ public class MixedAnalyticGameTest {
 					new RandomPolicy()
 				)
 			);
+			agent.setMurderPolicy(
+					new MurderFirstInnocentPolicy()
+			);
 			agents.add(agent);
 		}
-		Evaluator evaluator = new Evaluator(agents, 2);
+		Evaluator evaluator = new Evaluator(agents, 2, true);
 		evaluator.evaluate(10000);
 	}
 }

@@ -23,7 +23,7 @@ public class EvidenceExtractor {
 		Set<World> positiveWorlds = new HashSet<World>();
 		Set<World> negativeWorlds = new HashSet<World>();
 		WorldFilter filter = new WorldFilter();
-		double voteCount = (double) day.countVotes(player);
+		double voteCount = (double) day.countVotes(player, day.getVotes());
 		
 		/* Player is more likely to be innocent. */
 		if (role == Role.WOLF) {

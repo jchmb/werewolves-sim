@@ -4,7 +4,8 @@ import nl.jchmb.wolves.core.policy.Policy;
 
 public class Agent {
 	private String name;
-	private Policy policy;
+	private Policy votePolicy;
+	private Policy murderPolicy;
 	
 	public Agent(String name) {
 		this.name = name;
@@ -14,11 +15,19 @@ public class Agent {
 		return name;
 	}
 	
-	public void setPolicy(Policy policy) {
-		this.policy = policy;
+	public void setVotePolicy(Policy policy) {
+		this.votePolicy = policy;
 	}
 	
-	public Player choose(Player player, Day day) {
-		return policy.choose(player, day);
+	public void setMurderPolicy(Policy policy) {
+		this.murderPolicy = policy;
+	}
+	
+	public Player chooseVotee(Player player, Day day) {
+		return votePolicy.choose(player, day);
+	}
+	
+	public Player chooseVictim(Player player, Day day) {
+		return murderPolicy.choose(player, day);
 	}
 }

@@ -13,10 +13,16 @@ import nl.jchmb.wolves.core.Role;
 public class Evaluator {
 	public int numWolves;
 	private List<Agent> agents;
+	private boolean nightModeEnabled = false;
 	
 	public Evaluator(List<Agent> agents, int numWolves) {
+		this(agents, numWolves, false);
+	}
+	
+	public Evaluator(List<Agent> agents, int numWolves, boolean nightModeEnabled) {
 		this.agents = agents;
 		this.numWolves = numWolves;
+		this.nightModeEnabled = nightModeEnabled;
 	}
 	
 	/**
@@ -32,7 +38,8 @@ public class Evaluator {
 		Reward victor;
 		double doubleN = (double) n;
 		for (int i = 0; i < n; i++) {
-			game = new Game(agents, numWolves); 
+			game = new Game(agents, numWolves);
+			game.setNightMode(nightModeEnabled);
 			victor = game.play();
 			if (victor != null) {
 				if (victor.equals(Reward.WOLF)) {
