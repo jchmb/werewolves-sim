@@ -80,9 +80,13 @@ public class Game {
 	}
 	
 	public List<Player> getAlivePlayers() {
+		return getAlivePlayers(null);
+	}
+	
+	public List<Player> getAlivePlayers(Player excludePlayer) {
 		List<Player> alivePlayers = new ArrayList<Player>();
 		for (Player player : getPlayers()) {
-			if (!player.isDead()) {
+			if (!player.isDead() && (excludePlayer == null || excludePlayer != player)) {
 				alivePlayers.add(player);
 			}
 		}
@@ -112,10 +116,10 @@ public class Game {
 		/* Prune all impossible worlds, since the impossibility has become common knowledge after the previous lynch. */
 		if (getCurrentDay() != null && getCurrentDay().getLynched() != null) {
 			Player lynched = getCurrentDay().getLynched();
-			Set<World> worlds = getAllPossibleWorlds();
+			//Set<World> worlds = getAllPossibleWorlds();
 			WorldFilter filter = new WorldFilter();
-			possibleWorlds = filter.assumePlayerHasRole(worlds, lynched, lynched.getRole());
-			impossibleWorlds.addAll(filter.assumePlayerHasRole(worlds, lynched, lynched.getRole().equals(Role.WOLF) ? Role.INNOCENT : Role.WOLF));
+			//possibleWorlds = filter.assumePlayerHasRole(worlds, lynched, lynched.getRole());
+			//impossibleWorlds.addAll(filter.assumePlayerHasRole(worlds, lynched, lynched.getRole().equals(Role.WOLF) ? Role.INNOCENT : Role.WOLF));
 		}
 		
 		Day day = new Day(this, days.size() + 1);

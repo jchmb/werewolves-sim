@@ -46,7 +46,7 @@ public class BeliefBasedPolicy implements Policy {
 	
 	@Override
 	public Player choose(Player actor, Day day) {
-		List<Player> alivePlayers = day.getAlivePlayers();
+		List<Player> alivePlayers = day.getAlivePlayers(actor);
 		Collections.sort(alivePlayers, new BeliefComparator(
 				day.getGame(),
 				f

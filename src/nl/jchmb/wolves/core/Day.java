@@ -22,7 +22,11 @@ public class Day {
 	}
 	
 	public List<Player> getAlivePlayers() {
-		return game.getAlivePlayers();
+		return getAlivePlayers(null);
+	}
+	
+	public List<Player> getAlivePlayers(Player actor) {
+		return game.getAlivePlayers(actor);
 	}
 	
 	public Day getPreviousDay() {
