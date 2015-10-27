@@ -16,6 +16,7 @@ public class Game {
 	private List<Player> players;
 	private List<Day> days;
 	private int numWolves;
+	private boolean nightModeEnabled = false;
 	
 	private static long LAST_ID = 0;
 	private static final int DEFAULT_LIMIT = 20000;
@@ -111,11 +112,15 @@ public class Game {
 	public Day nextDay() {
 		/* Prune all impossible worlds, since the impossibility has become common knowledge after the previous lynch. */
 		if (getCurrentDay() != null && getCurrentDay().getLynched() != null) {
-			Player lynched = getCurrentDay().getLynched();
-			Set<World> worlds = getAllPossibleWorlds();
-			WorldFilter filter = new WorldFilter();
-			possibleWorlds = filter.assumePlayerHasRole(worlds, lynched, lynched.getRole());
-			impossibleWorlds.addAll(filter.assumePlayerHasRole(worlds, lynched, lynched.getRole().equals(Role.WOLF) ? Role.INNOCENT : Role.WOLF));
+//			Player lynched = getCurrentDay().getLynched();
+//			Player victim = getCurrentDay().getVictim();
+//			Set<World> worlds = getAllPossibleWorlds();
+//			WorldFilter filter = new WorldFilter();
+//			possibleWorlds = filter.assumePlayerHasRole(worlds, lynched, lynched.getRole());
+//			if (victim != null) {
+//				possibleWorlds = filter.assumePlayerHasRole(possibleWorlds, victim, victim.getRole());
+//			}
+			//impossibleWorlds.addAll(filter.assumePlayerHasRole(worlds, lynched, lynched.getRole().equals(Role.WOLF) ? Role.INNOCENT : Role.WOLF));
 		}
 		
 		Day day = new Day(this, days.size() + 1);
@@ -148,6 +153,10 @@ public class Game {
 		}
 	}
 	
+	public void setNightMode(boolean enabled) {
+		nightModeEnabled = enabled;
+	}
+	
 	private void giveRoles() {
 		List<Player> playerList = new ArrayList<Player>(players);
 		Collections.shuffle(playerList);
@@ -172,12 +181,19 @@ public class Game {
 	
 	public void playRound() {
 		nextDay();
-		Player votee;
+		Player votee, victim;
 		for (Player voter : getAlivePlayers()) {
-			votee = voter.getAgent().choose(voter, getCurrentDay());
+			votee = voter.getAgent().chooseVotee(voter, getCurrentDay());
 			getCurrentDay().vote(voter, votee);
+			if (nightModeEnabled && voter.getRole().equals(Role.WOLF)) {
+				victim = voter.getAgent().chooseVictim(voter, getCurrentDay());
+				getCurrentDay().murder(voter, victim);
+			}
 		}
 		getCurrentDay().lynch();
+		if (nightModeEnabled) {
+			getCurrentDay().murder();
+		}
 	}
 	
 	public String toString() {

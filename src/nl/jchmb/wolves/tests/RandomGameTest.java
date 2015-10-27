@@ -7,6 +7,7 @@ import nl.jchmb.wolves.core.Agent;
 import nl.jchmb.wolves.core.Game;
 import nl.jchmb.wolves.core.Player;
 import nl.jchmb.wolves.core.policy.AnalyticInnocentPolicy;
+import nl.jchmb.wolves.core.policy.MurderFirstInnocentPolicy;
 import nl.jchmb.wolves.core.policy.RandomPolicy;
 import nl.jchmb.wolves.core.policy.RoleDependentPolicy;
 import nl.jchmb.wolves.core.policy.VoteInnocentPolicy;
@@ -17,16 +18,19 @@ public class RandomGameTest {
 		Agent agent;
 		for (int i = 0; i < 7; i++) {
 			agent = new Agent("a_" + i);
-			agent.setPolicy(
+			agent.setVotePolicy(
 				new RoleDependentPolicy(
 					new RandomPolicy(),
 					//new VoteInnocentPolicy(),
 					new RandomPolicy()
 				)
 			);
+			agent.setMurderPolicy(
+					new MurderFirstInnocentPolicy()
+			);
 			agents.add(agent);
 		}
-		Evaluator evaluator = new Evaluator(agents, 2);
-		evaluator.evaluate(50000);
+		Evaluator evaluator = new Evaluator(agents, 2, false);
+		evaluator.evaluate(100000);
 	}
 }

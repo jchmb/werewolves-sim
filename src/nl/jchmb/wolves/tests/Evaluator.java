@@ -4,6 +4,8 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JDialog;
+
 import nl.jchmb.wolves.core.Agent;
 import nl.jchmb.wolves.core.Game;
 import nl.jchmb.wolves.core.Player;
@@ -13,10 +15,16 @@ import nl.jchmb.wolves.core.Role;
 public class Evaluator {
 	public int numWolves;
 	private List<Agent> agents;
+	private boolean nightModeEnabled = false;
 	
 	public Evaluator(List<Agent> agents, int numWolves) {
+		this(agents, numWolves, false);
+	}
+	
+	public Evaluator(List<Agent> agents, int numWolves, boolean nightModeEnabled) {
 		this.agents = agents;
 		this.numWolves = numWolves;
+		this.nightModeEnabled = nightModeEnabled;
 	}
 	
 	/**
@@ -32,7 +40,8 @@ public class Evaluator {
 		Reward victor;
 		double doubleN = (double) n;
 		for (int i = 0; i < n; i++) {
-			game = new Game(agents, numWolves); 
+			game = new Game(agents, numWolves);
+			game.setNightMode(nightModeEnabled);
 			victor = game.play();
 			if (victor != null) {
 				if (victor.equals(Reward.WOLF)) {
@@ -45,6 +54,7 @@ public class Evaluator {
 			} else {
 				neutralCount += 1.0d;
 			}
+			System.out.println(i + 1);
 		}
 		
 		wolfCount += neutralCount / 2;

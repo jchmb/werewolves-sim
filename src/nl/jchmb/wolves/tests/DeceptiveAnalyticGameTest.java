@@ -19,7 +19,7 @@ public class DeceptiveAnalyticGameTest {
 		Agent agent;
 		for (int i = 0; i < 7; i++) {
 			agent = new Agent("a_" + i);
-			agent.setPolicy(
+			agent.setVotePolicy(
 				new RoleDependentPolicy(
 					new MixedPolicy(
 						Float.parseFloat(args[0]),
