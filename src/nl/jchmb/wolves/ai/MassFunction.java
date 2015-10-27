@@ -145,7 +145,7 @@ public class MassFunction<W> {
 		return worlds;
 	}
 	
-	private class Mass {
+	public class Mass {
 		private Set<W> worlds;
 		private double mass;
 		

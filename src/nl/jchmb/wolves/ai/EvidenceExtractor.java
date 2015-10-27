@@ -15,6 +15,22 @@ public class EvidenceExtractor {
 	 */
 	private double alpha = 0.6d;
 	
+	public MassFunction<World> getUniformFunction(Game game) {
+		MassFunction<World> f = new MassFunction<World>();
+		return buildUniformFunction(game, f);
+	}
+	
+	public MassFunction<World> buildUniformFunction(Game game, MassFunction<World> f) {
+		Set<World> worlds = game.getAllPossibleWorlds();
+		double mass = 1.0d / ((double) worlds.size());
+		
+		for (World world : worlds) {
+			f.add(world, mass);
+		}
+		
+		return f;
+	}
+	
 	private void extractVote(Day day, Vote vote, MassFunction<World> f) {
 		Set<World> possibleWorlds = day.getGame().getAllPossibleWorlds();
 		Player player = day.getLynched();
@@ -36,7 +52,8 @@ public class EvidenceExtractor {
 			negativeWorlds = filter.assumePlayerHasRole(possibleWorlds, voter, Role.INNOCENT);
 			
 		} else {
-			// Error
+			buildUniformFunction(day.getGame(), f);
+			return;
 		}
 		
 		f.add(positiveWorlds, alpha / voteCount);

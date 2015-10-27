@@ -4,6 +4,8 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JDialog;
+
 import nl.jchmb.wolves.core.Agent;
 import nl.jchmb.wolves.core.Game;
 import nl.jchmb.wolves.core.Player;
@@ -52,6 +54,7 @@ public class Evaluator {
 			} else {
 				neutralCount += 1.0d;
 			}
+			System.out.println(i + 1);
 		}
 		
 		wolfCount += neutralCount / 2;

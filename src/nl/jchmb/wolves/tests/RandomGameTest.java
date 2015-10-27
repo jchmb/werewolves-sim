@@ -20,8 +20,8 @@ public class RandomGameTest {
 			agent = new Agent("a_" + i);
 			agent.setVotePolicy(
 				new RoleDependentPolicy(
-					//new RandomPolicy(),
-					new VoteInnocentPolicy(),
+					new RandomPolicy(),
+					//new VoteInnocentPolicy(),
 					new RandomPolicy()
 				)
 			);
@@ -30,7 +30,7 @@ public class RandomGameTest {
 			);
 			agents.add(agent);
 		}
-		Evaluator evaluator = new Evaluator(agents, 2, true);
-		evaluator.evaluate(10000);
+		Evaluator evaluator = new Evaluator(agents, 2, false);
+		evaluator.evaluate(100000);
 	}
 }

@@ -27,6 +27,8 @@ public class AnalyticInnocentPolicy extends BeliefBasedPolicy {
 				pruneMassFunction(day.getGame().getAllPossibleWorlds());
 				combine(evidenceExtractor.extract(day.getPreviousDay()));
 			}
+		} else {
+			//combine(evidenceExtractor.getUniformFunction(day.getGame()));
 		}
 		
 		if (hasMassFunction()) {
