@@ -2,12 +2,16 @@ package nl.jchmb.wolves.core;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import nl.jchmb.ai.belief.PreferenceModel;
+import nl.jchmb.wolves.ai.AccessibilityImpl;
 import nl.jchmb.wolves.ai.World;
-import nl.jchmb.wolves.ai.WorldFilter;
 
 public class Game {	
 	private long id;
@@ -17,6 +21,7 @@ public class Game {
 	private List<Day> days;
 	private int numWolves;
 	private boolean nightModeEnabled = false;
+	private PreferenceModel<Player, World> model;
 	
 	private static long LAST_ID = 0;
 	private static final int DEFAULT_LIMIT = 20000;
@@ -30,6 +35,38 @@ public class Game {
 		}
 		days = new ArrayList<Day>();
 		this.numWolves = numWolves;
+		giveRoles();
+		Map<Player, Comparator<World>> preferenceMap = new HashMap<Player, Comparator<World>>();
+		for (Player player : players) {
+			preferenceMap.put(player, new Comparator<World>(){
+				public int compare(World w1, World w2) {
+					return 0;
+				}
+			});
+		}
+		model = new PreferenceModel<Player, World>(
+				players,
+				getAllPossibleWorlds(),
+				new AccessibilityImpl(),
+				getActualWorld(),
+				preferenceMap
+		);
+	}
+	
+	public World getActualWorld() {
+		for (World world : possibleWorlds) {
+			boolean actualWorld = true;
+			for (Player player : players) {
+				if (!world.playerHasRole(player, player.getRole())) {
+					actualWorld = false;
+					break;
+				}
+			}
+			if (actualWorld) {
+				return world;
+			}
+		}
+		return null;
 	}
 	
 	public long getID() {

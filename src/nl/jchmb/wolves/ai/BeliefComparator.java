@@ -11,20 +11,15 @@ import nl.jchmb.wolves.core.Role;
 
 public class BeliefComparator implements Comparator<Player> {
 	private Game game;
-	private MassFunction<World> f;
 	private Map<Player, Double> beliefCache;
-	private WorldFilter filter;
 	
-	public BeliefComparator(Game game, MassFunction<World> f) {
+	public BeliefComparator(Game game) {
 		this.game = game;
-		this.f = f;
 		beliefCache = new HashMap<Player, Double>();
-		filter = new WorldFilter();
 	}
 	
 	private double getBelief(Set<World> worlds, Player p) {
-		Set<World> worldsWherePIsWolf = filter.assumePlayerHasRole(worlds, p, Role.WOLF);
-		return f.getBelief(worldsWherePIsWolf);
+		
 	}
 	
 	@Override
