@@ -16,7 +16,7 @@ public class AnalyticGameTest {
 	public static void main(String[] args) {
 		List<Agent> agents = new ArrayList<Agent>();
 		Agent agent;
-		for (int i = 0; i < 13; i++) {
+		for (int i = 0; i < 16; i++) {
 			agent = new Agent("a_" + i);
 			agent.setVotePolicy(
 				new RoleDependentPolicy(
@@ -29,7 +29,7 @@ public class AnalyticGameTest {
 			);
 			agents.add(agent);
 		}
-		Evaluator evaluator = new Evaluator(agents, 3, true);
-		evaluator.evaluate(50);
+		Evaluator evaluator = new Evaluator(agents, 4, false);
+		evaluator.evaluate(1000);
 	}
 }
