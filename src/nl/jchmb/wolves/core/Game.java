@@ -16,6 +16,8 @@ public class Game {
 	private List<Day> days;
 	private int numWolves;
 	private boolean nightModeEnabled = false;
+	private boolean mayorModeEnabled = false;
+	private Player mayor = null;
 	
 	private static long LAST_ID = 0;
 	private static final int DEFAULT_LIMIT = 20000;
@@ -152,8 +154,24 @@ public class Game {
 		}
 	}
 	
+	public boolean isMayorModeEnabled() {
+		return mayorModeEnabled;
+	}
+	
+	public void setMayor(Player mayor) {
+		this.mayor = mayor;
+	}
+	
+	public Player getMayor() {
+		return mayor;
+	}
+	
 	public void setNightMode(boolean enabled) {
 		nightModeEnabled = enabled;
+	}
+	
+	public void setMayorMode(boolean enabled) {
+		mayorModeEnabled = enabled;
 	}
 	
 	private void giveRoles() {

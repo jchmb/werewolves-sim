@@ -9,6 +9,7 @@ public class Day {
 	private Game game;
 	private int n;
 	private List<Vote> votes;
+	private List<Vote> mayorVotes;
 	private List<Vote> murderVotes;
 	private Player lynched = null;
 	private Player victim = null;
@@ -17,6 +18,7 @@ public class Day {
 		this.game = game;
 		this.n = n;
 		votes = new ArrayList<Vote>();
+		mayorVotes = new ArrayList<Vote>();
 		murderVotes = new ArrayList<Vote>();
 	}
 	
@@ -52,6 +54,14 @@ public class Day {
 		Vote vote = new Vote(voter, votee);
 		murderVotes.add(vote);
 		return vote;
+	}
+	
+	public Player electMayor() {
+		Player newMayor = findMaxPlayer(mayorVotes);
+		if (newMayor != null) {
+			game.setMayor(newMayor);
+		}
+		return newMayor;
 	}
 	
 	public Player murder() {
