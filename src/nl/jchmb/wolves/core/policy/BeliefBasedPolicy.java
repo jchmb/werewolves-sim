@@ -17,6 +17,7 @@ import nl.jchmb.wolves.core.Role;
 
 public class BeliefBasedPolicy implements Policy {
 	private static BeliefSupport belief;
+	private static List<Player> maxPlayers;
 	protected static long lastGameID = -1;
 	protected static int lastDay = -1;
 	private Game game;
@@ -29,16 +30,7 @@ public class BeliefBasedPolicy implements Policy {
 		belief = new BeliefSupport(game.getAllPossibleWorlds());
 	}
 	
-	protected void upgrade(WorldAcceptor acceptor) {
-		belief.upgrade(acceptor);
-	}
-
-	public boolean hasBelief() {
-		return belief != null;
-	}
-	
-	@Override
-	public Player choose(Player actor, Day day) {
+	protected void loadMaxPlayers(Day day) {
 		List<Player> alivePlayers = day.getAlivePlayers();
 		List<Player> maxPlayers = new ArrayList<Player>();
 		double maxBelief = -1.0d;
@@ -53,6 +45,19 @@ public class BeliefBasedPolicy implements Policy {
 				maxPlayers.add(player);
 			}
 		}
+		if (maxPlayers.isEmpty()) {
+			this.maxPlayers = null;
+		} else {
+			this.maxPlayers = maxPlayers;
+		}
+	}
+	
+	protected void upgrade(WorldAcceptor acceptor) {
+		belief.upgrade(acceptor);
+	}
+	
+	@Override
+	public Player choose(Player actor, Day day) {
 		if (maxPlayers.isEmpty()) {
 			return null;
 		}

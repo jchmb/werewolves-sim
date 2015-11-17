@@ -20,10 +20,12 @@ public class AnalyticInnocentPolicy extends BeliefBasedPolicy {
 			lastGameID = day.getGame().getID();
 			lastDay = 1;
 			reset(day.getGame());
+			loadMaxPlayers(day);
 		}
 		/* On the second day, start analyzing evidence and updating one's beliefs. */
 		if (day.getNumber() > 1) {
 			if (lastDay < day.getNumber()) {
+				loadMaxPlayers(day);
 				lastDay = day.getNumber();
 				WorldAcceptor acceptor = evidenceExtractor.extract(day.getPreviousDay());
 				if (acceptor != null) {
@@ -34,10 +36,6 @@ public class AnalyticInnocentPolicy extends BeliefBasedPolicy {
 			//combine(evidenceExtractor.getUniformFunction(day.getGame()));
 		}
 		
-		if (hasBelief()) {
-			return super.choose(actor, day);
-		} else {
-			return new RandomPolicy().choose(actor, day);
-		}
+		return super.choose(actor, day);
 	}
 }
