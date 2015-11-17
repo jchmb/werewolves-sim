@@ -6,6 +6,7 @@ import java.util.List;
 import nl.jchmb.wolves.core.Agent;
 import nl.jchmb.wolves.core.Game;
 import nl.jchmb.wolves.core.Player;
+import nl.jchmb.wolves.core.policy.AnalyticInnocentCombinedPolicy;
 import nl.jchmb.wolves.core.policy.AnalyticInnocentPolicy;
 import nl.jchmb.wolves.core.policy.LynchCombinedPolicy;
 import nl.jchmb.wolves.core.policy.MurderFirstInnocentPolicy;
@@ -23,7 +24,7 @@ public class AnalyticGameTest {
 			agent.setVotePolicy(
 				new RoleDependentPolicy(
 					new VoteInnocentCombinedPolicy(),
-					new AnalyticInnocentPolicy()
+					new AnalyticInnocentCombinedPolicy()
 					//new LynchCombinedPolicy()
 				)
 			);
