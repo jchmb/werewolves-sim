@@ -1,5 +1,6 @@
-package nl.jchmb.wolves.ai;
+package nl.jchmb.wolves.ai.acceptor;
 
+import nl.jchmb.wolves.ai.World;
 import nl.jchmb.wolves.core.Player;
 import nl.jchmb.wolves.core.Role;
 

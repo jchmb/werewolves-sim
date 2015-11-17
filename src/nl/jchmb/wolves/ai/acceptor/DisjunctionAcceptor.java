@@ -1,6 +1,8 @@
-package nl.jchmb.wolves.ai;
+package nl.jchmb.wolves.ai.acceptor;
 
 import java.util.Collection;
+
+import nl.jchmb.wolves.ai.World;
 
 public class DisjunctionAcceptor implements WorldAcceptor {
 

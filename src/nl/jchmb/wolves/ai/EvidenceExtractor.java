@@ -5,6 +5,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import nl.jchmb.wolves.ai.acceptor.DisjunctionAcceptor;
+import nl.jchmb.wolves.ai.acceptor.RoleAcceptor;
+import nl.jchmb.wolves.ai.acceptor.WorldAcceptor;
 import nl.jchmb.wolves.core.Day;
 import nl.jchmb.wolves.core.Game;
 import nl.jchmb.wolves.core.Player;

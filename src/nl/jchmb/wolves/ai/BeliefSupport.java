@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import nl.jchmb.wolves.ai.acceptor.NullAcceptor;
+import nl.jchmb.wolves.ai.acceptor.WorldAcceptor;
+
 public class BeliefSupport {
 	private List<Support> supports;
 	private double alpha = 1.2d;

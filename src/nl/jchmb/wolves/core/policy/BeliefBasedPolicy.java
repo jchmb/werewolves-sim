@@ -6,10 +6,9 @@ import java.util.List;
 import java.util.Set;
 
 import nl.jchmb.wolves.ai.BeliefSupport;
-import nl.jchmb.wolves.ai.MassFunction;
-import nl.jchmb.wolves.ai.RoleAcceptor;
 import nl.jchmb.wolves.ai.World;
-import nl.jchmb.wolves.ai.WorldAcceptor;
+import nl.jchmb.wolves.ai.acceptor.RoleAcceptor;
+import nl.jchmb.wolves.ai.acceptor.WorldAcceptor;
 import nl.jchmb.wolves.core.Day;
 import nl.jchmb.wolves.core.Game;
 import nl.jchmb.wolves.core.Player;

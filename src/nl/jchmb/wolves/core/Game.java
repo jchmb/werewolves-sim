@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Set;
 
 import nl.jchmb.wolves.ai.World;
-import nl.jchmb.wolves.ai.WorldFilter;
 
 public class Game {	
 	private long id;
