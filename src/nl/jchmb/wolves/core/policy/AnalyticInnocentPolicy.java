@@ -1,6 +1,7 @@
 package nl.jchmb.wolves.core.policy;
 
 import nl.jchmb.wolves.ai.EvidenceExtractor;
+import nl.jchmb.wolves.ai.WorldAcceptor;
 import nl.jchmb.wolves.core.Day;
 import nl.jchmb.wolves.core.Player;
 
@@ -18,23 +19,23 @@ public class AnalyticInnocentPolicy extends BeliefBasedPolicy {
 		if (day.getGame().getID() != lastGameID) {
 			lastGameID = day.getGame().getID();
 			lastDay = 1;
-			reset();
+			reset(day.getGame());
+			loadMaxPlayers(day);
 		}
 		/* On the second day, start analyzing evidence and updating one's beliefs. */
 		if (day.getNumber() > 1) {
 			if (lastDay < day.getNumber()) {
+				loadMaxPlayers(day);
 				lastDay = day.getNumber();
-				pruneMassFunction(day.getGame().getAllPossibleWorlds());
-				combine(evidenceExtractor.extract(day.getPreviousDay()));
+				WorldAcceptor acceptor = evidenceExtractor.extract(day.getPreviousDay());
+				if (acceptor != null) {
+					upgrade(acceptor);
+				}
 			}
 		} else {
 			//combine(evidenceExtractor.getUniformFunction(day.getGame()));
 		}
 		
-		if (hasMassFunction()) {
-			return super.choose(actor, day);
-		} else {
-			return new RandomPolicy().choose(actor, day);
-		}
+		return super.choose(actor, day);
 	}
 }
